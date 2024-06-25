@@ -56,6 +56,8 @@ void ADLPlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Triggered, this, &ADLPlayerController::OnSetDestinationTriggered);
 		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Completed, this, &ADLPlayerController::OnSetDestinationReleased);
 		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Canceled, this, &ADLPlayerController::OnSetDestinationReleased);
+		
+		EnhancedInputComponent->BindAction(MouseScrollAction, ETriggerEvent::Triggered, this, &ADLPlayerController::OnMouseScrollTriggered);
 	}
 	else
 	{
@@ -103,4 +105,12 @@ void ADLPlayerController::OnSetDestinationReleased()
 	}
 
 	FollowTime = 0.f;
+}
+
+void ADLPlayerController::OnMouseScrollTriggered(const FInputActionValue& Value)
+{
+	if (CachedPlayerCharacter != nullptr)
+	{
+		CachedPlayerCharacter->ChangeCameraPosition(Value.Get<float>());
+	}
 }

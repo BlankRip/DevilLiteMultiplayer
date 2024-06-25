@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 #include "Templates/SubclassOf.h"
 #include "GameFramework/PlayerController.h"
-//#include "DLPlayerCharacter.h"
+#include "InputActionValue.h"
 #include "DLPlayerController.generated.h"
 
 /** Forward declaration to improve compiling times */
@@ -33,6 +33,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* SetDestinationClickAction;
 
+	/** Set Destination Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* MouseScrollAction;
+
 protected:
 	/** True if the controlled character should navigate to the mouse cursor. */
 	uint32 bMoveToMouseCursor : 1;
@@ -46,6 +50,7 @@ protected:
 	void OnInputStarted();
 	void OnSetDestinationTriggered();
 	void OnSetDestinationReleased();
+	void OnMouseScrollTriggered(const FInputActionValue& Value);
 
 private:
 	FVector CachedDestination;
