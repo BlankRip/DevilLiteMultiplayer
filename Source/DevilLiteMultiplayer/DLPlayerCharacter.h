@@ -3,18 +3,20 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DevilLiteMultiplayerCharacter.h"
+#include "DLCharacterBase.h"
 #include "DLPlayerCharacter.generated.h"
 
 
 class UNiagaraSystem;
 
 UCLASS()
-class DEVILLITEMULTIPLAYER_API ADLPlayerCharacter : public ADevilLiteMultiplayerCharacter
+class DEVILLITEMULTIPLAYER_API ADLPlayerCharacter : public ADLCharacterBase
 {
 	GENERATED_BODY()
 	
 public:
+	ADLPlayerCharacter();
+
 	void Tick(float DeltaSeconds) override;
 
 	void ChangeCameraPosition(const float& inputValue);

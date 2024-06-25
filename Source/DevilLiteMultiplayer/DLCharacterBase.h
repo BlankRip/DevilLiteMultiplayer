@@ -4,15 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "DevilLiteMultiplayerCharacter.generated.h"
+#include "DLCharacterBase.generated.h"
 
 UCLASS(Blueprintable)
-class ADevilLiteMultiplayerCharacter : public ACharacter
+class ADLCharacterBase : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
-	ADevilLiteMultiplayerCharacter();
+	ADLCharacterBase();
 
 	// Called every frame.
 	virtual void Tick(float DeltaSeconds) override;

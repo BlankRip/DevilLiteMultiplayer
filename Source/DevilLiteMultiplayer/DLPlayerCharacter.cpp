@@ -3,6 +3,12 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "NiagaraFunctionLibrary.h"
 
+ADLPlayerCharacter::ADLPlayerCharacter()
+{
+    bIsCameraLerping = false;
+    CameraLerpTimer = 0.f;
+}
+
 void ADLPlayerCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
