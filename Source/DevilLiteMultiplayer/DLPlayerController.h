@@ -3,12 +3,13 @@
 #include "CoreMinimal.h"
 #include "Templates/SubclassOf.h"
 #include "GameFramework/PlayerController.h"
+//#include "DLPlayerCharacter.h"
 #include "DLPlayerController.generated.h"
 
 /** Forward declaration to improve compiling times */
-class UNiagaraSystem;
 class UInputMappingContext;
 class UInputAction;
+class ADLPlayerCharacter;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
@@ -23,10 +24,6 @@ public:
 	/** Time Threshold to know if it was a short press */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	float ShortPressThreshold;
-
-	/** FX Class that we will spawn when clicking */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	UNiagaraSystem* FXCursor;
 
 	/** MappingContext */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
@@ -52,6 +49,7 @@ protected:
 
 private:
 	FVector CachedDestination;
+	ADLPlayerCharacter* CachedPlayerCharacter;
 
 	float FollowTime; // For how long it has been pressed
 	const ECollisionChannel mouseRegesterableChannel = ECollisionChannel::ECC_GameTraceChannel1;

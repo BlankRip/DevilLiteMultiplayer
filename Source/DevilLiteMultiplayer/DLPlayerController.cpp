@@ -4,9 +4,7 @@
 #include "DLPlayerController.h"
 #include "GameFramework/Pawn.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
-#include "NiagaraSystem.h"
-#include "NiagaraFunctionLibrary.h"
-#include "../Framework/DevilLiteMultiplayerCharacter.h"
+#include "DLPlayerCharacter.h"
 #include "Engine/World.h"
 #include "EnhancedInputComponent.h"
 #include "InputActionValue.h"
@@ -28,6 +26,15 @@ void ADLPlayerController::BeginPlay()
 {
 	// Call the base class
 	Super::BeginPlay();
+	APawn* ControlledPawn = GetPawn();
+	if (ControlledPawn != nullptr)
+	{
+		CachedPlayerCharacter = Cast<ADLPlayerCharacter>(ControlledPawn);
+		if (CachedPlayerCharacter == nullptr)
+		{
+			UE_LOG(LogTemp, Error, TEXT("This controller is only supposed to work with a player character, but assigned pawn is not a DLPlayerCharacter"));
+		}
+	}
 }
 
 void ADLPlayerController::SetupInputComponent()
@@ -58,7 +65,10 @@ void ADLPlayerController::SetupInputComponent()
 
 void ADLPlayerController::OnInputStarted()
 {
-	StopMovement();
+	if (CachedPlayerCharacter != nullptr)
+	{
+		CachedPlayerCharacter->StopMovement();
+	}
 }
 
 // Triggered every frame when the input is held down
@@ -78,23 +88,18 @@ void ADLPlayerController::OnSetDestinationTriggered()
 		CachedDestination = Hit.Location;
 	}
 
-	// Move towards mouse pointer or touch
-	APawn* ControlledPawn = GetPawn();
-	if (ControlledPawn != nullptr)
+	if (CachedPlayerCharacter != nullptr)
 	{
-		FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
-		ControlledPawn->AddMovementInput(WorldDirection, 1.0, false);
+		CachedPlayerCharacter->ApplyMovmentInputToTarget(CachedDestination);
 	}
 }
 
 void ADLPlayerController::OnSetDestinationReleased()
 {
 	// If it was a short press
-	if (FollowTime <= ShortPressThreshold)
+	if (FollowTime <= ShortPressThreshold && CachedPlayerCharacter != nullptr)
 	{
-		// We move there and spawn some particles
-		UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, CachedDestination);
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, CachedDestination, FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);
+		CachedPlayerCharacter->TriggerMoveToDestination(CachedDestination);
 	}
 
 	FollowTime = 0.f;

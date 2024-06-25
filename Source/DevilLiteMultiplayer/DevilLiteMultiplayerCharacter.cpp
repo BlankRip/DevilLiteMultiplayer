@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "DevilLiteMultiplayerCharacter.h"
+#include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Camera/CameraComponent.h"
 #include "Components/DecalComponent.h"
@@ -48,4 +49,20 @@ ADevilLiteMultiplayerCharacter::ADevilLiteMultiplayerCharacter()
 void ADevilLiteMultiplayerCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+}
+
+void ADevilLiteMultiplayerCharacter::StopMovement()
+{
+	GetController()->StopMovement();
+}
+
+void ADevilLiteMultiplayerCharacter::ApplyMovmentInputToTarget(const FVector& TargetLoction)
+{
+	FVector WorldDirection = (TargetLoction - GetActorLocation()).GetSafeNormal();
+	AddMovementInput(WorldDirection, 1.0, false);
+}
+
+void ADevilLiteMultiplayerCharacter::TriggerMoveToDestination(const FVector& TargetLocation)
+{
+	UAIBlueprintHelperLibrary::SimpleMoveToLocation(GetController(), TargetLocation);
 }
