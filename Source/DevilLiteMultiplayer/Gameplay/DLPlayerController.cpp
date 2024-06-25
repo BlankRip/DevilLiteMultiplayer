@@ -1,11 +1,12 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "DevilLiteMultiplayerPlayerController.h"
+
+#include "DLPlayerController.h"
 #include "GameFramework/Pawn.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "NiagaraSystem.h"
 #include "NiagaraFunctionLibrary.h"
-#include "DevilLiteMultiplayerCharacter.h"
+#include "../Framework/DevilLiteMultiplayerCharacter.h"
 #include "Engine/World.h"
 #include "EnhancedInputComponent.h"
 #include "InputActionValue.h"
@@ -14,7 +15,7 @@
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
-ADevilLiteMultiplayerPlayerController::ADevilLiteMultiplayerPlayerController()
+ADLPlayerController::ADLPlayerController()
 {
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
@@ -22,13 +23,13 @@ ADevilLiteMultiplayerPlayerController::ADevilLiteMultiplayerPlayerController()
 	FollowTime = 0.f;
 }
 
-void ADevilLiteMultiplayerPlayerController::BeginPlay()
+void ADLPlayerController::BeginPlay()
 {
-	// Call the base class  
+	// Call the base class
 	Super::BeginPlay();
 }
 
-void ADevilLiteMultiplayerPlayerController::SetupInputComponent()
+void ADLPlayerController::SetupInputComponent()
 {
 	// set up gameplay key bindings
 	Super::SetupInputComponent();
@@ -43,16 +44,11 @@ void ADevilLiteMultiplayerPlayerController::SetupInputComponent()
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
 	{
 		// Setup mouse input events
-		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Started, this, &ADevilLiteMultiplayerPlayerController::OnInputStarted);
-		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Triggered, this, &ADevilLiteMultiplayerPlayerController::OnSetDestinationTriggered);
-		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Completed, this, &ADevilLiteMultiplayerPlayerController::OnSetDestinationReleased);
-		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Canceled, this, &ADevilLiteMultiplayerPlayerController::OnSetDestinationReleased);
+		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Started, this, &ADLPlayerController::OnInputStarted);
+		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Triggered, this, &ADLPlayerController::OnSetDestinationTriggered);
+		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Completed, this, &ADLPlayerController::OnSetDestinationReleased);
+		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Canceled, this, &ADLPlayerController::OnSetDestinationReleased);
 
-		// Setup touch input events
-		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Started, this, &ADevilLiteMultiplayerPlayerController::OnInputStarted);
-		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Triggered, this, &ADevilLiteMultiplayerPlayerController::OnTouchTriggered);
-		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Completed, this, &ADevilLiteMultiplayerPlayerController::OnTouchReleased);
-		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Canceled, this, &ADevilLiteMultiplayerPlayerController::OnTouchReleased);
 	}
 	else
 	{
@@ -60,17 +56,17 @@ void ADevilLiteMultiplayerPlayerController::SetupInputComponent()
 	}
 }
 
-void ADevilLiteMultiplayerPlayerController::OnInputStarted()
+void ADLPlayerController::OnInputStarted()
 {
 	StopMovement();
 }
 
 // Triggered every frame when the input is held down
-void ADevilLiteMultiplayerPlayerController::OnSetDestinationTriggered()
+void ADLPlayerController::OnSetDestinationTriggered()
 {
 	// We flag that the input is being pressed
 	FollowTime += GetWorld()->GetDeltaSeconds();
-	
+
 	// We look for the location in the world where the player has pressed the input
 	FHitResult Hit;
 	bool bHitSuccessful = false;
@@ -88,7 +84,7 @@ void ADevilLiteMultiplayerPlayerController::OnSetDestinationTriggered()
 	{
 		CachedDestination = Hit.Location;
 	}
-	
+
 	// Move towards mouse pointer or touch
 	APawn* ControlledPawn = GetPawn();
 	if (ControlledPawn != nullptr)
@@ -98,7 +94,7 @@ void ADevilLiteMultiplayerPlayerController::OnSetDestinationTriggered()
 	}
 }
 
-void ADevilLiteMultiplayerPlayerController::OnSetDestinationReleased()
+void ADLPlayerController::OnSetDestinationReleased()
 {
 	// If it was a short press
 	if (FollowTime <= ShortPressThreshold)
@@ -112,13 +108,13 @@ void ADevilLiteMultiplayerPlayerController::OnSetDestinationReleased()
 }
 
 // Triggered every frame when the input is held down
-void ADevilLiteMultiplayerPlayerController::OnTouchTriggered()
+void ADLPlayerController::OnTouchTriggered()
 {
 	bIsTouch = true;
 	OnSetDestinationTriggered();
 }
 
-void ADevilLiteMultiplayerPlayerController::OnTouchReleased()
+void ADLPlayerController::OnTouchReleased()
 {
 	bIsTouch = false;
 	OnSetDestinationReleased();
