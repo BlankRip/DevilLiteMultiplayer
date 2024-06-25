@@ -49,12 +49,10 @@ protected:
 	void OnInputStarted();
 	void OnSetDestinationTriggered();
 	void OnSetDestinationReleased();
-	void OnTouchTriggered();
-	void OnTouchReleased();
 
 private:
 	FVector CachedDestination;
 
-	bool bIsTouch; // Is it a touch device
 	float FollowTime; // For how long it has been pressed
+	const ECollisionChannel mouseRegesterableChannel = ECollisionChannel::ECC_GameTraceChannel1;
 };
