@@ -37,7 +37,7 @@ public:
 	/** Set Destination Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* MouseScrollAction;
-
+	
 protected:
 	/** True if the controlled character should navigate to the mouse cursor. */
 	uint32 bMoveToMouseCursor : 1;
@@ -67,4 +67,5 @@ private:
 
 	UFUNCTION()
 	void OnMouseHitObjectChanged(AActor* SenderActor, EMouseHitType NewMouseHitType);
+
 };

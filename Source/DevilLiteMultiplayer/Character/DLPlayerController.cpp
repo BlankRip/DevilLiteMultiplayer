@@ -96,7 +96,7 @@ void ADLPlayerController::OnSetDestinationTriggered()
 		CachedDestination = Hit.Location;
 	}
 
-	if (CachedPlayerCharacter != nullptr)
+	if (CurrentMouseHitType == EMouseHitType::Default_Walk && CachedPlayerCharacter != nullptr)
 	{
 		CachedPlayerCharacter->ApplyMovmentInputToTarget(CachedDestination);
 	}
@@ -105,7 +105,7 @@ void ADLPlayerController::OnSetDestinationTriggered()
 void ADLPlayerController::OnSetDestinationReleased()
 {
 	// If it was a short press
-	if (FollowTime <= ShortPressThreshold && CachedPlayerCharacter != nullptr)
+	if (CurrentMouseHitType == EMouseHitType::Default_Walk && FollowTime <= ShortPressThreshold && CachedPlayerCharacter != nullptr)
 	{
 		CachedPlayerCharacter->TriggerMoveToDestination(CachedDestination);
 	}
@@ -135,4 +135,5 @@ void ADLPlayerController::OnMouseHitObjectChanged(AActor* SenderActor, EMouseHit
 		CurrentMouseCursor = EMouseCursor::GrabHand;
 		break;
 	}
+	CurrentMouseHitType = NewMouseHitType;
 }

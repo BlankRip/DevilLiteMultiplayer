@@ -17,7 +17,6 @@ void UMouseOverlapNotifierComponent::BeginPlay()
 
 void UMouseOverlapNotifierComponent::BegunCursorOver(UPrimitiveComponent* Component)
 {
-	UE_LOG(LogTemp, Display, TEXT("ENTING"));
 	MouseGlobalEvents->OnMouseHitRegisteredEvent.Broadcast(GetOwner(), MouseHitType);
 }
 
