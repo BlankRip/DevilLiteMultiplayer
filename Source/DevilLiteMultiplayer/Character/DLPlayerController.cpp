@@ -40,6 +40,11 @@ void ADLPlayerController::BeginPlay()
 	if(MouseGlobalEvents != nullptr)
 	{
 		MouseGlobalEvents->OnMouseHitRegisteredEvent.AddDynamic(this, &ADLPlayerController::OnMouseHitObjectChanged);
+		OnDestroyed.AddDynamic(this, &ADLPlayerController::OnDestroyedEventCallback);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("The Mouse Global Event data asset is not assigned in the player controller"));
 	}
 }
 
@@ -136,4 +141,9 @@ void ADLPlayerController::OnMouseHitObjectChanged(AActor* SenderActor, EMouseHit
 		break;
 	}
 	CurrentMouseHitType = NewMouseHitType;
+}
+
+void ADLPlayerController::OnDestroyedEventCallback(AActor* actor)
+{
+	MouseGlobalEvents->OnMouseHitRegisteredEvent.RemoveDynamic(this, &ADLPlayerController::OnMouseHitObjectChanged);
 }

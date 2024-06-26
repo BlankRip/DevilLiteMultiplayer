@@ -67,5 +67,6 @@ private:
 
 	UFUNCTION()
 	void OnMouseHitObjectChanged(AActor* SenderActor, EMouseHitType NewMouseHitType);
-
+	UFUNCTION()
+	void OnDestroyedEventCallback(AActor* actor);
 };

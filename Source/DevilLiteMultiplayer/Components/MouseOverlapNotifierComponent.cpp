@@ -4,14 +4,11 @@ void UMouseOverlapNotifierComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	ensureAlwaysMsgf(MouseGlobalEvents != nullptr, TEXT("The Mouse Global Events Data Asset is not assigned on mouse overlap notifier componet of actor %s"), *GetOwner()->GetName());
 	if(MouseGlobalEvents != nullptr)
 	{
 		OnBeginCursorOver.AddDynamic(this, &UMouseOverlapNotifierComponent::BegunCursorOver);
 		OnEndCursorOver.AddDynamic(this, &UMouseOverlapNotifierComponent::EndCursorOver);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("The Mouse Global Events Data Asset is not assigned"));
 	}
 }
 
