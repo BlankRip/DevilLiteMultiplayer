@@ -3,19 +3,20 @@
 
 #include "DLPlayerController.h"
 #include "GameFramework/Pawn.h"
-#include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "DLPlayerCharacter.h"
 #include "Engine/World.h"
 #include "EnhancedInputComponent.h"
 #include "InputActionValue.h"
 #include "EnhancedInputSubsystems.h"
 #include "Engine/LocalPlayer.h"
+#include "DevilLiteMultiplayer/DataAssets/MouseGlobalEvents.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 ADLPlayerController::ADLPlayerController()
 {
 	bShowMouseCursor = true;
+	bEnableMouseOverEvents = true;
 	DefaultMouseCursor = EMouseCursor::Default;
 	DefaultClickTraceChannel = mouseRegesterableChannel;
 	CachedDestination = FVector::ZeroVector;
@@ -34,6 +35,11 @@ void ADLPlayerController::BeginPlay()
 		{
 			UE_LOG(LogTemp, Error, TEXT("This controller is only supposed to work with a player character, but assigned pawn is not a DLPlayerCharacter"));
 		}
+	}
+
+	if(MouseGlobalEvents != nullptr)
+	{
+		MouseGlobalEvents->OnMouseHitRegisteredEvent.AddDynamic(this, &ADLPlayerController::OnMouseHitObjectChanged);
 	}
 }
 
@@ -112,5 +118,21 @@ void ADLPlayerController::OnMouseScrollTriggered(const FInputActionValue& Value)
 	if (CachedPlayerCharacter != nullptr)
 	{
 		CachedPlayerCharacter->ChangeCameraPosition(Value.Get<float>());
+	}
+}
+
+void ADLPlayerController::OnMouseHitObjectChanged(AActor* SenderActor, EMouseHitType NewMouseHitType)
+{
+	switch (NewMouseHitType)
+	{
+	case EMouseHitType::Default_Walk:
+		CurrentMouseCursor = EMouseCursor::Default;
+		break;
+	case EMouseHitType::Attackable:
+		CurrentMouseCursor = EMouseCursor::Crosshairs;
+		break;
+	case EMouseHitType::Interactable:
+		CurrentMouseCursor = EMouseCursor::GrabHand;
+		break;
 	}
 }

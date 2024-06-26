@@ -1,7 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "DevilLiteMultiplayerGameMode.h"
-#include "DLCharacterBase.h"
 #include "UObject/ConstructorHelpers.h"
 
 ADevilLiteMultiplayerGameMode::ADevilLiteMultiplayerGameMode()

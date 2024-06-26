@@ -6,7 +6,8 @@
 #include "InputActionValue.h"
 #include "DLPlayerController.generated.h"
 
-/** Forward declaration to improve compiling times */
+enum class EMouseHitType : uint8;
+class UMouseGlobalEvents;
 class UInputMappingContext;
 class UInputAction;
 class ADLPlayerCharacter;
@@ -58,4 +59,12 @@ private:
 
 	float FollowTime; // For how long it has been pressed
 	const ECollisionChannel mouseRegesterableChannel = ECollisionChannel::ECC_GameTraceChannel1;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Mouse Data")
+	UMouseGlobalEvents* MouseGlobalEvents;
+	UPROPERTY(VisibleAnywhere, Category = "Mouse Data")
+	EMouseHitType CurrentMouseHitType;
+
+	UFUNCTION()
+	void OnMouseHitObjectChanged(AActor* SenderActor, EMouseHitType NewMouseHitType);
 };

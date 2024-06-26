@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
-#include "MouseHoverGlobalEvent.generated.h"
+#include "MouseGlobalEvents.generated.h"
 
 UENUM(BlueprintType)
 enum class EMouseHitType : uint8 {
@@ -14,14 +14,12 @@ enum class EMouseHitType : uint8 {
 };
 
 UCLASS()
-class DEVILLITEMULTIPLAYER_API UMouseHoverGlobalEvent : public UDataAsset
+class DEVILLITEMULTIPLAYER_API UMouseGlobalEvents : public UDataAsset
 {
 	GENERATED_BODY()
 	
 public:
-    DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMouseHitRegestered, EMouseHitType, CurrentMouseHitType);
-    UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnMouseHitRegestered, AActor*, SenderActor, EMouseHitType, CurrentMouseHitType);
+    UPROPERTY(VisibleAnywhere, BlueprintAssignable, BlueprintCallable)
     FOnMouseHitRegestered OnMouseHitRegisteredEvent;
-
-
 };
