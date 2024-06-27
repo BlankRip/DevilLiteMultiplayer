@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
+#include "DevilLiteMultiplayer/AbilitySystem/Attributes/DLCharacterAttributeSet.h"
 #include "DLCharacterBase.generated.h"
 
 UCLASS(Blueprintable)
@@ -42,5 +43,8 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	class UAbilitySystemComponent* AbilitySystem;
+
+	UPROPERTY()
+	UDLCharacterAttributeSet* AttributeSet;
 };
 

@@ -47,6 +47,7 @@ ADLCharacterBase::ADLCharacterBase()
 
 	//Creating ability system component
 	AbilitySystem = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("Ability System"));
+	AttributeSet = CreateDefaultSubobject<UDLCharacterAttributeSet>(TEXT("Attribute Set"));
 }
 
 void ADLCharacterBase::BeginPlay()
