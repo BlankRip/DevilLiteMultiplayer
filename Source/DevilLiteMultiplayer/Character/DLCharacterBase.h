@@ -4,16 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "AbilitySystemInterface.h"
 #include "DLCharacterBase.generated.h"
 
 UCLASS(Blueprintable)
-class ADLCharacterBase : public ACharacter
+class ADLCharacterBase : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
 	ADLCharacterBase();
 
+	virtual void BeginPlay() override;
 	// Called every frame.
 	virtual void Tick(float DeltaSeconds) override;
 
@@ -21,6 +23,8 @@ public:
 	FORCEINLINE class UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
+
+	FORCEINLINE virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return AbilitySystem; }
 
 	void StopMovement();
 	void ApplyMovmentInputToTarget(const FVector& TargetLoction);
@@ -35,5 +39,8 @@ protected:
 	/** Camera boom positioning the camera above the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	class UAbilitySystemComponent* AbilitySystem;
 };
 
