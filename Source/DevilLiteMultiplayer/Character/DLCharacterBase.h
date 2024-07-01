@@ -46,5 +46,11 @@ protected:
 
 	UPROPERTY()
 	UDLCharacterAttributeSet* AttributeSet;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Attribue Base Values", meta=(AllowPrivateAccess=true))
+	float BaseHealth = 100.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Attribue Base Values", meta=(AllowPrivateAccess=true))
+	float BaseResource = 100.f;
 };
 

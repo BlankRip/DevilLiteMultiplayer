@@ -54,6 +54,8 @@ void ADLCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
 	AbilitySystem->InitAbilityActorInfo(this, this);
+	AttributeSet->InitResource(BaseResource);
+	AttributeSet->InitHealth(BaseHealth);
 }
 
 void ADLCharacterBase::Tick(float DeltaSeconds)
@@ -61,8 +63,10 @@ void ADLCharacterBase::Tick(float DeltaSeconds)
     Super::Tick(DeltaSeconds);
 	if(GEngine)
 	{
-		FString LvalueToPrintStr = FString::SanitizeFloat(AttributeSet->GetResource());
+		FString LvalueToPrintStr = FString::SanitizeFloat(AttributeSet->GetResourceAttribute().GetGameplayAttributeData(AttributeSet)->GetCurrentValue());
 		GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::Purple, TEXT(valueToPrintStr));
+		FString LvalueToPrintStr2 = FString::SanitizeFloat(AttributeSet->GetResourceAttribute().GetGameplayAttributeData(AttributeSet)->GetBaseValue());
+		GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::Purple, TEXT(valueToPrintStr2));
 	}
 }
 
