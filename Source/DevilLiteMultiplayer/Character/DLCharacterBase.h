@@ -31,6 +31,11 @@ public:
 	void ApplyMovmentInputToTarget(const FVector& TargetLoction);
 	virtual void TriggerMoveToDestination(const FVector& TargetLocation);
 
+	UFUNCTION(BlueprintCallable)
+	float GetNormalizedHealthValue();
+	UFUNCTION(BlueprintCallable)
+	float GetNormalizedResourceValue();
+
 
 protected:
 	/** Top down camera */

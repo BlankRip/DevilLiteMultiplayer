@@ -63,10 +63,10 @@ void ADLCharacterBase::Tick(float DeltaSeconds)
     Super::Tick(DeltaSeconds);
 	if(GEngine)
 	{
-		FString LvalueToPrintStr = FString::SanitizeFloat(AttributeSet->GetResourceAttribute().GetGameplayAttributeData(AttributeSet)->GetCurrentValue());
-		GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::Purple, TEXT(valueToPrintStr));
-		FString LvalueToPrintStr2 = FString::SanitizeFloat(AttributeSet->GetResourceAttribute().GetGameplayAttributeData(AttributeSet)->GetBaseValue());
-		GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::Purple, TEXT(valueToPrintStr2));
+		FString valueToPrintStr = FString::SanitizeFloat(AttributeSet->GetResourceAttribute().GetGameplayAttributeData(AttributeSet)->GetCurrentValue());
+		GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::Purple, *valueToPrintStr);
+		FString valueToPrintStr2 = FString::SanitizeFloat(AttributeSet->GetResourceAttribute().GetGameplayAttributeData(AttributeSet)->GetBaseValue());
+		GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::Purple, *valueToPrintStr2);
 	}
 }
 
@@ -84,4 +84,14 @@ void ADLCharacterBase::ApplyMovmentInputToTarget(const FVector& TargetLoction)
 void ADLCharacterBase::TriggerMoveToDestination(const FVector& TargetLocation)
 {
 	UAIBlueprintHelperLibrary::SimpleMoveToLocation(GetController(), TargetLocation);
+}
+
+float ADLCharacterBase::GetNormalizedHealthValue()
+{
+	return AttributeSet->GetHealth()/BaseHealth;
+}
+
+float ADLCharacterBase::GetNormalizedResourceValue()
+{
+	return AttributeSet->GetResource()/BaseResource;
 }
