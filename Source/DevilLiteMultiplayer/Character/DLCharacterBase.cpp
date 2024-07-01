@@ -59,6 +59,11 @@ void ADLCharacterBase::BeginPlay()
 void ADLCharacterBase::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+	if(GEngine)
+	{
+		FString LvalueToPrintStr = FString::SanitizeFloat(AttributeSet->GetResource());
+		GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::Purple, TEXT(valueToPrintStr));
+	}
 }
 
 void ADLCharacterBase::StopMovement()
