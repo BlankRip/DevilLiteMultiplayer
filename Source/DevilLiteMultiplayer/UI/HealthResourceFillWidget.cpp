@@ -7,12 +7,18 @@
 #include "Components/ProgressBar.h"
 #include "DevilLiteMultiplayer/Character/DLCharacterBase.h"
 
-void UHealthResourceFillWidget::InitializeWithAttribute(ADLCharacterBase* Owner, FGameplayAttribute& ConnectingAttribute)
+void UHealthResourceFillWidget::InitializeWithAttribute(ADLCharacterBase* OwnerChar, const FGameplayAttribute& ConnectingAttribute)
 {
-	OwnerCharacter = Owner;
+	OwnerCharacter = OwnerChar;
+	auto& Delegate = OwnerCharacter->GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(ConnectingAttribute);
+	Delegate.AddWeakLambda(this, [this](const FOnAttributeChangeData& AttributeChangeData)
+	{
+		OnAttributeVauleChanged(AttributeChangeData);
+	});
+	FillProgressBar->SetPercent(1.f);
 }
 
-void UHealthResourceFillWidget::OnAttributeVauleChanged()
+void UHealthResourceFillWidget::OnAttributeVauleChanged(const FOnAttributeChangeData& AttributeChangeData)
 {
 	float fillAmount = 1.f;
 	if(bIsHealthAttribute)

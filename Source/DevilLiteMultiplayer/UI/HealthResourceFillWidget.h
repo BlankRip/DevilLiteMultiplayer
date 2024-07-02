@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "GameplayEffectTypes.h"
 #include "HealthResourceFillWidget.generated.h"
 
 struct FGameplayAttribute;
@@ -19,19 +20,18 @@ class DEVILLITEMULTIPLAYER_API UHealthResourceFillWidget : public UUserWidget
 
 public:
 	UFUNCTION(BlueprintCallable)
-	void InitializeWithAttribute(ADLCharacterBase* Owner, FGameplayAttribute& ConnectingAttribute);
+	void InitializeWithAttribute(ADLCharacterBase* OwnerChar, const FGameplayAttribute& ConnectingAttribute);
 	
 private:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess=true))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess=true, BindWidget))
 	UProgressBar* FillProgressBar;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess=true))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess=true))
 	bool bIsHealthAttribute;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess=true))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess=true))
 	bool bIsResourceAttribute;
 
 	ADLCharacterBase* OwnerCharacter;
 
-	UFUNCTION()
-	void OnAttributeVauleChanged();
+	void OnAttributeVauleChanged(const FOnAttributeChangeData& AttributeChangeData);
 };

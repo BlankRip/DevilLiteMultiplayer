@@ -8,6 +8,7 @@
 
 
 class UNiagaraSystem;
+class UUserWidget;
 
 UCLASS()
 class DEVILLITEMULTIPLAYER_API ADLPlayerCharacter : public ADLCharacterBase
@@ -16,6 +17,8 @@ class DEVILLITEMULTIPLAYER_API ADLPlayerCharacter : public ADLCharacterBase
 	
 public:
 	ADLPlayerCharacter();
+
+	void BeginPlay() override;
 
 	void Tick(float DeltaSeconds) override;
 
@@ -33,6 +36,9 @@ private:
 	bool bIsCameraLerping;
 	FVector2D SpringArmLerpEndPoints;
 	float CameraLerpTimer;
+
+	UPROPERTY(EditDefaultsOnly, Category="UI")
+	TSubclassOf<UUserWidget> HudWidgetClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player Effects", meta = (AllowPrivateAccess = "true"))
 	float CameraLerpTime = 1.f;

@@ -2,11 +2,22 @@
 //#include "NiagaraSystem.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Blueprint/UserWidget.h"
 
 ADLPlayerCharacter::ADLPlayerCharacter()
 {
     bIsCameraLerping = false;
     CameraLerpTimer = 0.f;
+}
+
+void ADLPlayerCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	if(HudWidgetClass != nullptr)
+	{
+		UUserWidget* hud = CreateWidget<UUserWidget>(this->GetGameInstance(), HudWidgetClass);
+		hud->AddToViewport();
+	}
 }
 
 void ADLPlayerCharacter::Tick(float DeltaSeconds)

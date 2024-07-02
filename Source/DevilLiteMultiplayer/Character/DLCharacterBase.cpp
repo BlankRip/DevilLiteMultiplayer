@@ -86,6 +86,16 @@ void ADLCharacterBase::TriggerMoveToDestination(const FVector& TargetLocation)
 	UAIBlueprintHelperLibrary::SimpleMoveToLocation(GetController(), TargetLocation);
 }
 
+FGameplayAttribute ADLCharacterBase::GetHealthAttribute()
+{
+	return AttributeSet->GetHealthAttribute();
+}
+
+FGameplayAttribute ADLCharacterBase::GetResourceAttribute()
+{
+	return AttributeSet->GetResourceAttribute();
+}
+
 float ADLCharacterBase::GetNormalizedHealthValue()
 {
 	return AttributeSet->GetHealth()/BaseHealth;

@@ -32,6 +32,10 @@ public:
 	virtual void TriggerMoveToDestination(const FVector& TargetLocation);
 
 	UFUNCTION(BlueprintCallable)
+	FGameplayAttribute GetHealthAttribute();
+	UFUNCTION(BlueprintCallable)
+	FGameplayAttribute GetResourceAttribute();
+	UFUNCTION(BlueprintCallable)
 	float GetNormalizedHealthValue();
 	UFUNCTION(BlueprintCallable)
 	float GetNormalizedResourceValue();
