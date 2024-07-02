@@ -76,6 +76,8 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void HandleHealthRegenPerSecond(const float& DeltaSeconds);
+	UFUNCTION(BlueprintCallable)
+	void HandleResourceRegenPerSecond(const float& DeltaSeconds);
 
 private:
 	float HealthRegenPerSecond = 0.f;

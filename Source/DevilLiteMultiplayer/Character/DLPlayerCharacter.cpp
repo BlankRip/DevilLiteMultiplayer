@@ -25,6 +25,7 @@ void ADLPlayerCharacter::Tick(float DeltaSeconds)
     Super::Tick(DeltaSeconds);
 
 	HandleHealthRegenPerSecond(DeltaSeconds);
+	HandleResourceRegenPerSecond(DeltaSeconds);
 	if (bIsCameraLerping)
 	{
         CameraLerpTimer += DeltaSeconds;

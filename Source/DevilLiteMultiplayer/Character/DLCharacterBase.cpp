@@ -103,46 +103,28 @@ float ADLCharacterBase::GetNormalizedResourceValue()
 
 void ADLCharacterBase::HandleHealthRegenPerSecond(const float& DeltaSeconds)
 {
-	// if(HealthRegenPerSecond != 0.f && AttributeSet->GetHealth() < BaseHealth)
-	// {
-	// 	float amountToAddThisFrame = HealthRegenPerSecond * DeltaSeconds;
-	// 	float finalHealthValue = AttributeSet->GetHealth() + amountToAddThisFrame;
-	// 	if(finalHealthValue > BaseHealth)
-	// 	{
-	// 		finalHealthValue = BaseHealth;
-	// 	}
-	// 	AttributeSet->SetHealth(finalHealthValue);
-	// }
-	HandleHealthOrResourceRegenPerSecond(DeltaSeconds, true, HealthRegenPerSecond, BaseHealth);
+	if(HealthRegenPerSecond != 0.f && AttributeSet->GetHealth() < BaseHealth)
+	{
+		float amountToAddThisFrame = HealthRegenPerSecond * DeltaSeconds;
+		float finalHealthValue = AttributeSet->GetHealth() + amountToAddThisFrame;
+		if(finalHealthValue > BaseHealth)
+		{
+			finalHealthValue = BaseHealth;
+		}
+		AttributeSet->SetHealth(finalHealthValue);
+	}
 }
 
-void ADLCharacterBase::HandleHealthOrResourceRegenPerSecond(const float& DeltaSeconds, bool IsForHealth, const float& RegenPerSecondAmount, const float& BaseValue)
+void ADLCharacterBase::HandleResourceRegenPerSecond(const float& DeltaSeconds)
 {
-	float currentValue = 0.f;
-	if(IsForHealth)
+	if(ResourceRegenPerSecond != 0.f && AttributeSet->GetResource() < BaseResource)
 	{
-		currentValue = AttributeSet->GetHealth();
-	}
-	else
-	{
-		currentValue = AttributeSet->GetResource();
-	}
-	
-	if(RegenPerSecondAmount != 0.f && currentValue < BaseValue)
-	{
-		float amountToAddThisFrame = RegenPerSecondAmount * DeltaSeconds;
-		float finalValue = currentValue + amountToAddThisFrame;
-		if(finalValue > BaseValue)
+		float amountToAddThisFrame = ResourceRegenPerSecond * DeltaSeconds;
+		float finalHealthValue = AttributeSet->GetResource() + amountToAddThisFrame;
+		if(finalHealthValue > BaseResource)
 		{
-			finalValue = BaseValue;
+			finalHealthValue = BaseResource;
 		}
-		if(IsForHealth)
-		{
-			AttributeSet->SetHealth(finalValue);
-		}
-		else
-		{
-			AttributeSet->SetResource(finalValue);
-		}
+		AttributeSet->SetResource(finalHealthValue);
 	}
 }
