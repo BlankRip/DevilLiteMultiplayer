@@ -41,9 +41,13 @@ public:
 	float GetNormalizedResourceValue();
 
 	UFUNCTION(BlueprintCallable)
-	void SetHealthRegenPerSecond(const float& ValueToSet);
+	FORCEINLINE void SetHealthRegenPerSecond(const float& ValueToSet) { HealthRegenPerSecond = ValueToSet; }
 	UFUNCTION(BlueprintCallable)
-	void AddToHealthRegenPerSecond(const float& AddAmount);
+	FORCEINLINE void AddToHealthRegenPerSecond(const float& AddAmount) { HealthRegenPerSecond += AddAmount; }
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetResourceRegenPerSecond(const float& ValueToSet) { ResourceRegenPerSecond = ValueToSet; }
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void AddToResourceRegenPerSecond(const float& AddAmount) { ResourceRegenPerSecond += AddAmount; }
 
 protected:
 	/** Top down camera */
@@ -67,11 +71,16 @@ protected:
 	float BaseResource = 100.f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Attribue Base Values", meta=(AllowPrivateAccess=true))
 	float DefaultHealthRegenPerSecond = 0.f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Attribue Base Values", meta=(AllowPrivateAccess=true))
+	float DefaultResourceRegenPerSecond = 5.f;
 
 	UFUNCTION(BlueprintCallable)
 	void HandleHealthRegenPerSecond(const float& DeltaSeconds);
 
 private:
 	float HealthRegenPerSecond = 0.f;
+	float ResourceRegenPerSecond = 0.f;
+
+	void HandleHealthOrResourceRegenPerSecond(const float& DeltaSeconds, bool IsForHealth, const float& RegenPerSecondAmount, const float& BaseValue);
 };
 
