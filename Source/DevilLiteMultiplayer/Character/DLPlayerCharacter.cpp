@@ -24,6 +24,7 @@ void ADLPlayerCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
 
+	HandleHealthRegenPerSecond(DeltaSeconds);
 	if (bIsCameraLerping)
 	{
         CameraLerpTimer += DeltaSeconds;
@@ -35,6 +36,13 @@ void ADLPlayerCharacter::Tick(float DeltaSeconds)
             bIsCameraLerping = false;
         }
         CameraBoom->TargetArmLength = FMath::Lerp(SpringArmLerpEndPoints.X, SpringArmLerpEndPoints.Y, lerpValue);
+	}
+
+	
+	if(GEngine)
+	{
+		FString valueToPrintStr = FString::SanitizeFloat(AttributeSet->GetHealthAttribute().GetGameplayAttributeData(AttributeSet)->GetCurrentValue());
+		GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::Purple, *valueToPrintStr);
 	}
 }
 

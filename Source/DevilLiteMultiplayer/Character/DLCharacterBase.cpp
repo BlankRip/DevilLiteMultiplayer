@@ -56,18 +56,12 @@ void ADLCharacterBase::BeginPlay()
 	AbilitySystem->InitAbilityActorInfo(this, this);
 	AttributeSet->InitResource(BaseResource);
 	AttributeSet->InitHealth(BaseHealth);
+	SetHealthRegenPerSecond(DefaultHealthRegenPerSecond);
 }
 
 void ADLCharacterBase::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
-	if(GEngine)
-	{
-		FString valueToPrintStr = FString::SanitizeFloat(AttributeSet->GetResourceAttribute().GetGameplayAttributeData(AttributeSet)->GetCurrentValue());
-		GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::Purple, *valueToPrintStr);
-		FString valueToPrintStr2 = FString::SanitizeFloat(AttributeSet->GetResourceAttribute().GetGameplayAttributeData(AttributeSet)->GetBaseValue());
-		GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::Purple, *valueToPrintStr2);
-	}
 }
 
 void ADLCharacterBase::StopMovement()
@@ -104,4 +98,28 @@ float ADLCharacterBase::GetNormalizedHealthValue()
 float ADLCharacterBase::GetNormalizedResourceValue()
 {
 	return AttributeSet->GetResource()/BaseResource;
+}
+
+void ADLCharacterBase::SetHealthRegenPerSecond(const float& ValueToSet)
+{
+	HealthRegenPerSecond = ValueToSet;
+}
+
+void ADLCharacterBase::AddToHealthRegenPerSecond(const float& AddAmount)
+{
+	HealthRegenPerSecond += AddAmount;
+}
+
+void ADLCharacterBase::HandleHealthRegenPerSecond(const float& DeltaSeconds)
+{
+	if(HealthRegenPerSecond != 0.f && AttributeSet->GetHealth() < BaseHealth)
+	{
+		float amountToAddThisFrame = HealthRegenPerSecond * DeltaSeconds;
+		float finalHealthValue = AttributeSet->GetHealth() + amountToAddThisFrame;
+		if(finalHealthValue > BaseHealth)
+		{
+			finalHealthValue = BaseHealth;
+		}
+		AttributeSet->SetHealth(finalHealthValue);
+	}
 }

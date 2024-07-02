@@ -40,6 +40,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	float GetNormalizedResourceValue();
 
+	UFUNCTION(BlueprintCallable)
+	void SetHealthRegenPerSecond(const float& ValueToSet);
+	UFUNCTION(BlueprintCallable)
+	void AddToHealthRegenPerSecond(const float& AddAmount);
 
 protected:
 	/** Top down camera */
@@ -61,5 +65,13 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Attribue Base Values", meta=(AllowPrivateAccess=true))
 	float BaseResource = 100.f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Attribue Base Values", meta=(AllowPrivateAccess=true))
+	float DefaultHealthRegenPerSecond = 0.f;
+
+	UFUNCTION(BlueprintCallable)
+	void HandleHealthRegenPerSecond(const float& DeltaSeconds);
+
+private:
+	float HealthRegenPerSecond = 0.f;
 };
 
